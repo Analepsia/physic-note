@@ -1,0 +1,998 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>物理手记 · 教师备课本</title><style data-asset="styles.css">:root{--paper:#f7f7f2;
+--ink:#273b35;
+--muted:#7a8179;
+--green:#2d6154;
+--line:#dedfd5;
+--pale:#edf1e8;
+--gold:#aa7933}
+*{box-sizing:border-box}
+body{margin:0;
+background:var(--paper);
+color:var(--ink);
+font:15px/1.65 'Microsoft YaHei','PingFang SC',sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;
+color:inherit;
+border:1px solid transparent;
+background:transparent;
+border-radius:7px;
+min-height:44px;
+padding:8px 13px;
+touch-action:manipulation}
+button:hover{background:#e6ebe2}
+button:focus-visible,a:focus-visible{outline:3px solid #a6bd81;
+outline-offset:2px}
+button:disabled{opacity:.35;
+cursor:default}
+input,textarea,select{width:100%;
+padding:11px;
+border:1px solid var(--line);
+border-radius:7px;
+background:white;
+color:var(--ink)}
+textarea{min-height:130px;
+resize:vertical}
+h1,h2,h3,p{margin:0}
+h1{font:600 34px/1.4 'Songti SC','SimSun',serif;
+letter-spacing:2px}
+h2{font-size:17px}
+h3{font-size:16px}
+small,.muted{color:var(--muted);
+font-size:12px}
+.primary{background:var(--green);
+color:white}
+.primary:hover{background:#234d42}
+.outline{border-color:var(--line);
+background:#fff}
+.brand{display:flex;
+align-items:center;
+gap:11px;
+font-size:19px;
+letter-spacing:2px;
+font-weight:600}
+.brand-symbol{display:grid;
+place-items:center;
+background:var(--green);
+color:white;
+width:36px;
+height:36px;
+border-radius:8px;
+font-size:24px}
+.shell{display:grid;
+grid-template-columns:236px minmax(0,1fr);
+min-height:100vh}
+.shell.closed{grid-template-columns:0 minmax(0,1fr)}
+aside.tree{background:#eeefe7;
+border-right:1px solid var(--line);
+padding:27px 16px;
+position:sticky;
+top:0;
+height:100vh;
+overflow:auto}
+.closed aside.tree{visibility:hidden;
+padding:0;
+overflow:hidden}
+.tree .brand{margin:0 7px 38px}
+.tree-caption{display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
+padding-left:10px;
+font-size:12px;
+color:var(--muted);
+letter-spacing:2px}
+.tree-row{display:flex;
+align-items:center;
+border-radius:6px;
+margin:3px 0}
+.tree-row.active{background:#dce6d8;
+color:#254e3e;
+font-weight:600}
+.tree-row .node{flex:1;
+text-align:left;
+padding-left:2px;
+white-space:nowrap;
+font-size:13px}
+.tree-row .branch{width:38px;
+padding:0;
+flex-shrink:0}
+.tree-footer{margin:40px 10px 0;
+border-top:1px solid var(--line);
+padding-top:20px;
+font-size:12px;
+color:var(--muted)}
+main{min-width:0}
+.topbar{display:flex;
+gap:10px;
+align-items:center;
+justify-content:space-between;
+padding:12px 30px;
+border-bottom:1px solid var(--line);
+background:#fafaf6;
+position:sticky;
+top:0;
+z-index:5}
+.topbar-left{display:flex;
+align-items:center;
+gap:12px}
+.top-actions{display:flex;
+gap:5px}
+.save-status{font-size:12px;
+color:var(--muted)}
+.page{max-width:1340px;
+margin:auto;
+padding:18px 34px 70px}
+.breadcrumb{font-size:12px;
+color:var(--muted);
+display:flex;
+align-items:center;
+flex-wrap:wrap;
+gap:2px;
+margin-bottom:8px}
+.breadcrumb button{font-size:12px;
+padding:2px 5px;
+min-height:32px}
+.heading{display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px}
+.eyebrow{font:11px Georgia,serif;
+letter-spacing:2px;
+color:var(--green);
+margin-bottom:5px}
+.tags{display:flex;
+gap:7px;
+flex-wrap:wrap;
+margin-top:12px}
+.tag{font-size:11px;
+background:#eaf0e6;
+color:#62745e;
+border-radius:4px;
+padding:3px 8px}
+.template-bar{display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+margin:17px 0 16px;
+border-bottom:1px solid var(--line);
+padding-bottom:13px}
+.tabs{display:flex;
+gap:5px;
+background:#eaede4;
+padding:4px;
+border-radius:9px}
+.tabs button{font-size:13px;
+min-height:40px;
+padding:8px 15px}
+.tabs .selected{background:#fff;
+box-shadow:0 1px 4px #23382413;
+color:var(--green);
+font-weight:600}
+.template-hint{font-size:12px;
+color:var(--muted)}
+.blocks{display:grid;
+grid-template-columns:1fr 1fr;
+gap:17px 24px;
+align-items:start}
+.block{min-width:0;
+border-top:1px solid var(--line);
+padding-top:11px;
+scroll-margin-top:85px}
+.block-head{display:flex;
+align-items:center;
+justify-content:space-between;
+gap:5px}
+.collapse{display:flex;
+gap:12px;
+align-items:center;
+text-align:left;
+padding:0 3px;
+width:100%}
+.block-no{font:12px Georgia;
+color:#94a18c}
+.chev{margin-left:auto;
+color:#8d9488;
+font-size:13px}
+.block-body{padding:10px 4px 9px}
+.block[data-type=flow],.block[data-type=formula],.block[data-type=questions],.block[data-type=steps]{grid-column:1/-1}
+.block[data-type=flow]{background:#e9eee3;
+border:1px solid #dce4d4;
+border-radius:9px;
+padding:11px 16px}
+.flow{display:flex;
+align-items:center;
+gap:10px;
+justify-content:space-between;
+padding:5px 0}
+.flow span{font-size:13px}
+.flow b{color:#8d9f7a;
+font-weight:400}
+.bullets{padding:0;
+margin:0;
+list-style:none}
+.bullets li{margin:7px 0;
+padding-left:21px;
+position:relative;
+font-size:13px}
+.bullets li:before{content:'✓';
+position:absolute;
+left:0;
+color:#799268}
+.diagram-wrap{background:#f0f2ec;
+border-radius:7px;
+display:flex;
+align-items:center;
+justify-content:center}
+.diagram-wrap svg{max-height:150px;
+width:100%}
+.diagram-caption{font-size:11px;
+color:var(--muted);
+margin-top:8px}
+.formula-grid{display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px}
+.formula{border:1px solid #e2e4d9;
+background:#fffef9;
+border-radius:7px;
+padding:13px 17px}
+.formula small{display:block}
+.math{font:italic 27px/1.5 Georgia,'Times New Roman',serif;
+letter-spacing:.5px}
+.formula-note{font-size:12px;
+color:var(--muted);
+margin-top:9px}
+.steps{display:flex;
+gap:12px}
+.step{flex:1;
+min-width:0;
+font-size:12px;
+padding-left:11px;
+border-left:2px solid #d4dfc6}
+.step b{display:block;
+font-size:13px;
+margin-bottom:5px}
+.question-filters{display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin:0 0 12px}
+.question-filters button{min-height:40px;
+padding:5px 14px;
+font-size:12px}
+.question-filters .selected{background:#e1e9d9;
+color:#34582e}
+.question-grid{display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:12px}
+.question{border:1px solid var(--line);
+background:#fffef9;
+border-radius:8px;
+overflow:hidden;
+min-width:0}
+.question-top{padding:10px 15px;
+background:#eef0e8;
+display:flex;
+justify-content:space-between;
+font-size:11px;
+color:#737f65}
+.question-content{padding:14px}
+.question h3{font-size:14px;
+margin-bottom:8px}
+.question p{font-size:12px;
+white-space:pre-line}
+.question .question-text{min-height:90px}
+.question .why{margin-top:10px;
+padding-top:9px;
+border-top:1px dashed var(--line);
+color:#7b816e}
+.question-actions{display:flex;
+flex-wrap:wrap;
+gap:1px;
+margin-top:9px}
+.question-actions button{font-size:11px;
+padding:7px}
+.question-actions button:first-child{color:var(--green)}
+.analysis{background:#eff4e8;
+padding:11px;
+margin-top:9px;
+border-radius:5px}
+.mistake-row{padding:9px 12px;
+margin-bottom:7px;
+border-left:3px solid #c6a464;
+background:#f5efe2;
+font-size:12px}
+.mistake-row b{display:block;
+color:#8c6229}
+.board-teaser{display:flex;
+justify-content:space-between;
+align-items:center;
+background:#e8eee6;
+padding:15px;
+border-radius:7px}
+.board-teaser p{font-size:12px;
+color:var(--muted)}
+.edit-controls{display:flex;
+flex-wrap:wrap;
+gap:4px;
+margin:8px 0;
+padding:6px;
+background:#edf0e7;
+border-radius:6px}
+.edit-controls button{font-size:12px;
+padding:6px 10px;
+border:1px solid #d7dfcf;
+background:#fff}
+.drag-handle{touch-action:none}
+.dragging{opacity:.5;
+outline:2px dashed var(--green)}
+.editing-banner{font-size:12px;
+background:#e6ecdf;
+padding:10px 15px;
+border-radius:7px;
+margin-bottom:16px}
+.lecture{display:block;
+max-width:860px;
+margin:auto;
+border-left:1px solid #d3ddc8;
+padding-left:30px}
+.lecture .block{position:relative;
+margin:0 0 24px;
+padding:15px 19px;
+background:#fffef9;
+border:1px solid var(--line);
+border-radius:8px}
+.lecture .block-no{position:absolute;
+left:-48px;
+top:21px;
+background:var(--paper);
+padding:4px}
+.lecture .question-grid{grid-template-columns:1fr}
+.lecture .question-text{min-height:0}
+.lecture .diagram-wrap svg{max-height:240px}
+.library-nav{display:flex;
+gap:8px;
+overflow:auto;
+margin-bottom:20px;
+padding-bottom:7px}
+.library-nav button{white-space:nowrap;
+background:#edf0e6;
+border:1px solid var(--line)}
+.library-nav button.selected{background:var(--green);
+color:#fff}
+.library{display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:18px}
+.library .block{grid-column:auto;
+border:1px solid var(--line);
+border-radius:8px;
+padding:12px 16px;
+background:#fffef9}
+.library .block[data-type=questions]{grid-column:1/-1}
+.library .formula-grid,.library .steps,.library .flow{display:flex;
+flex-direction:column;
+align-items:stretch}
+.library .flow b{display:none}
+.library .formula{margin-bottom:4px}
+.empty{padding:36px;
+text-align:center;
+color:var(--muted);
+grid-column:1/-1}
+.image-content{max-width:100%;
+max-height:280px;
+object-fit:contain;
+display:block;
+margin:auto;
+cursor:zoom-in}
+.image-missing{background:#eeeee5;
+padding:25px;
+text-align:center;
+font-size:13px;
+color:var(--muted)}
+.plain-text{white-space:pre-line;
+font-size:13px}
+.add-bottom{width:100%;
+border:1px dashed #b9c8ad;
+margin-top:24px;
+color:var(--green)}
+dialog{color:var(--ink);
+border:1px solid var(--line);
+border-radius:14px;
+padding:25px;
+width:min(620px,calc(100vw - 28px));
+max-height:90dvh;
+overflow:auto;
+box-shadow:0 20px 90px #21382724;
+background:var(--paper)}
+dialog::backdrop{background:#26342b55}
+.modal-head{display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px}
+.modal-head h2{font-size:21px}
+.add-grid{display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px}
+.add-grid button{background:#fffef9;
+border:1px solid var(--line);
+padding:19px 8px;
+min-height:92px;
+text-align:left}
+.add-grid strong{display:block;
+color:var(--green);
+font-size:24px;
+margin-bottom:4px}
+.form-row{margin:13px 0}
+.form-row label{display:block;
+font-size:13px;
+margin-bottom:5px}
+.form-actions{display:flex;
+justify-content:flex-end;
+gap:10px;
+margin-top:21px}
+.preview-image{max-width:100%;
+max-height:230px;
+display:block;
+margin:12px auto}
+.upload{display:block;
+border:1px dashed #a3b292;
+border-radius:8px;
+padding:19px;
+text-align:center;
+background:#edf1e7}
+.upload input{margin-top:10px}
+.drawer{margin:0 0 0 auto;
+height:100dvh;
+max-height:100dvh;
+border-radius:14px 0 0 14px;
+width:min(650px,100vw);
+animation:slide .2s ease-out}
+.board-sheet{margin-top:20px;
+background:#fffef9;
+border:1px solid var(--line);
+border-radius:8px;
+padding:23px}
+.board-sheet h3{font:24px 'SimSun',serif;
+margin-bottom:20px}
+.board-line{padding:13px 0;
+border-bottom:1px solid #dfe5d7;
+font-size:17px;
+white-space:pre-line}
+.board-line b{font-size:13px;
+display:block;
+color:#798c6c}
+.chalk{background:#25473f;
+color:#f0efdc;
+border:8px solid #9e8a64;
+box-shadow:inset 0 0 30px #102b2944}
+.chalk .board-line{border-color:#ffffff24;
+font-family:'KaiTi','SimSun',serif;
+font-size:21px}
+.chalk .board-line b{color:#d8d49c}
+.board-question{margin-top:15px;
+padding:12px;
+border:1px dashed #829580;
+font-size:13px;
+white-space:pre-line}
+.zoom{width:min(1100px,95vw)}
+.zoom img{width:100%;
+max-height:75vh;
+object-fit:contain}
+.search-result{width:100%;
+text-align:left;
+border-bottom:1px solid var(--line);
+border-radius:0;
+padding:14px 6px}
+.search-result small{display:block}
+.directory{padding:30px 0}
+.directory button{display:block;
+min-width:250px;
+text-align:left;
+border:1px solid var(--line);
+margin-top:12px;
+background:#fffef9}
+#toast{position:fixed;
+bottom:26px;
+left:50%;
+transform:translateX(-50%);
+padding:11px 20px;
+border-radius:8px;
+background:#284b3f;
+color:white;
+z-index:30;
+font-size:13px;
+max-width:90%;
+opacity:0;
+pointer-events:none}
+#toast.visible{opacity:1}
+.storage-warning{color:#9c5b26}
+.drop-target{outline:2px solid var(--green)}
+@keyframes slide{from{transform:translateX(100%)}
+to{transform:translateX(0)}
+}
+@media(min-width:1400px){.page{padding:32px 48px}
+.question p,.bullets li,.flow span{font-size:14px}
+}
+@media(max-width:1050px){.shell{grid-template-columns:210px minmax(0,1fr)}
+.page{padding:20px 23px}
+.topbar{padding:10px 18px}
+.template-hint{display:none}
+.top-actions button{padding:8px 10px}
+.save-status{display:none}
+.question-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.steps{flex-wrap:wrap}
+.step{flex:1 1 28%}
+}
+@media(max-width:900px){.shell{grid-template-columns:0 minmax(0,1fr)}
+aside.tree{position:fixed;
+z-index:12;
+width:236px;
+box-shadow:15px 0 40px #26382922}
+.closed aside.tree{width:0}
+.page{padding:20px}
+.topbar-left .muted{display:none}
+.heading h1{font-size:29px}
+.flow{flex-wrap:wrap;
+justify-content:flex-start}
+.blocks{gap:18px}
+.topbar{gap:5px}
+.top-actions{gap:1px}
+.tabs button{padding:8px 11px}
+.template-bar{align-items:flex-start}
+.heading{align-items:flex-start}
+.formula-grid{gap:7px}
+.formula{padding:10px}
+.math{font-size:23px}
+}
+@media(max-width:560px){.blocks,.library{display:block}
+.block{margin-bottom:17px}
+.question-grid{grid-template-columns:1fr}
+.topbar{flex-wrap:wrap}
+.top-actions{margin-left:auto}
+.topbar-left button{padding:8px}
+.page{padding:17px}
+.heading .muted{display:none}
+.formula-grid{grid-template-columns:1fr}
+.formula{display:flex;
+align-items:center;
+justify-content:space-between}
+.add-grid{grid-template-columns:repeat(2,1fr)}
+.lecture{padding-left:23px}
+.lecture .block-no{left:-39px}
+.tabs button{font-size:12px}
+.breadcrumb{line-height:1.4}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;
+scroll-behavior:auto!important}
+}
+
+:root{scrollbar-gutter:stable}
+
+.page{padding-top:18px}
+
+.breadcrumb{margin-bottom:8px}
+
+.template-bar{margin-top:17px;
+margin-bottom:16px}
+
+.tags{margin-top:8px}
+
+.diagram-wrap svg{max-height:150px}
+
+.question-filters button,.tabs button{min-height:44px}
+
+:root{--diagram-force:#326656;--diagram-gravity:#a86635;--diagram-component:#657b3d;--diagram-muted:#97a391;--diagram-plane:#eff2e7;--diagram-block:#c9d8b6}
+.shell{transition:grid-template-columns .28s ease}
+aside.tree{min-width:0;transition:opacity .22s ease,transform .28s ease,visibility .28s;transform:translateX(0);opacity:1}
+.closed aside.tree{padding:27px 16px;opacity:0;transform:translateX(-100%);pointer-events:none}
+.tree .brand{margin-bottom:24px}
+.tree-caption{letter-spacing:1px;margin-bottom:5px}
+.tree-hide{font-size:12px;letter-spacing:0;border:1px solid #d3dbcb;background:#f8faf4;padding:7px 10px}
+.tree-locate{width:100%;text-align:left;font-size:12px;color:var(--green);border:1px dashed #c3cfb9;background:#f3f6ee;margin:5px 0 15px}
+.tree-navigation{padding:0 0 5px}
+.tree-row{margin:4px 0;padding-left:calc(var(--depth)*7px);min-height:46px;border:1px solid transparent;transition:background .18s,border-color .18s,box-shadow .18s}
+.tree-row.active{background:#dbe7d5;border-color:#bdcdb2;box-shadow:inset 3px 0 0 var(--green)}
+.tree-row .branch{width:40px;min-height:44px;border-radius:7px;display:grid;place-items:center}
+.tree-row .branch:hover{background:#d7e1cd}
+.branch-chevron{display:block;font:24px/1 Georgia;transition:transform .24s ease}
+.branch[aria-expanded=true] .branch-chevron{transform:rotate(90deg)}
+.tree-leaf{display:grid;place-items:center;width:40px;flex-shrink:0;color:#839975;font-size:15px}
+.tree-row .node{min-width:0;white-space:normal;display:flex;gap:6px;align-items:center;justify-content:space-between;line-height:1.45;padding:9px 7px 9px 0;border-radius:5px;font-size:13px}
+.node-current{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.tree-row button:active,.tree-locate:active,.tree-hide:active{transform:scale(.96);background:#cfddc5}
+.tree-children{display:grid;grid-template-rows:0fr;opacity:0;visibility:hidden;transition:grid-template-rows .26s ease,opacity .2s ease,visibility .26s}
+.tree-children.is-open{grid-template-rows:1fr;opacity:1;visibility:visible}
+.tree-children-inner{overflow:hidden;min-height:0}
+.tree-children .tree-children-inner{border-left:1px solid #d3ddcb;margin-left:9px}
+.block#block-essentials{grid-column:1/-1}
+.mastery-list{display:grid;grid-template-columns:1fr 1fr;gap:18px 25px}
+.mastery-item{display:flex;gap:11px;align-items:flex-start;padding:8px 0 12px;border-bottom:1px solid var(--line)}
+.mastery-number{font:italic 19px/30px Georgia;color:#81976e;width:24px;flex-shrink:0}
+.mastery-item h3{font-size:15px;margin:2px 0 8px}
+.mastery-item p{font-size:13px;line-height:1.9;color:#526052}
+.mastery-item .mastery-check{background:#edf1e5;border-radius:5px;margin-top:10px;padding:8px 10px;color:#48633d;font-size:12px}
+.lecture .mastery-list,.library .mastery-list{grid-template-columns:1fr}
+.board-drawer{width:min(890px,94vw);padding:23px 27px}
+.board-drawer.board-wide{width:min(1120px,100vw)}
+.board-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.copy-sheet{padding:25px;background:#fffef9}
+.copy-heading{border-bottom:2px solid #abbc98;padding-bottom:18px;margin-bottom:5px}
+.copy-heading>span{font-size:11px;letter-spacing:2px;color:#82906f}
+.copy-heading h3{margin:8px 0 10px;font-size:26px;line-height:1.5}
+.copy-heading p{font-size:13px;line-height:1.85;color:#65735b}
+.board-panel{padding:18px 0;border-bottom:1px solid #d7dfcc;break-inside:avoid}
+.board-panel h4{font-size:16px;margin:0 0 14px;display:flex;gap:12px;align-items:center}
+.board-panel h4>span{font:italic 18px Georgia;color:#889d72}
+.board-pair{display:grid;grid-template-columns:minmax(210px,.95fr) minmax(0,1.05fr);align-items:center;gap:22px}
+.board-pair figure{margin:0;min-width:0}
+.board-diagram{width:100%;display:block;font:19px Georgia,'Times New Roman',serif}
+.board-diagram .diagram-small{font:12px 'Microsoft YaHei',sans-serif;fill:var(--diagram-muted)}
+.board-pair figcaption{font-size:11px;line-height:1.7;color:#7b896c;padding:4px 7px}
+.board-equations{border-left:1px solid #dce3d1;padding-left:21px;min-width:0}
+.board-equation{margin:0 0 14px}
+.board-equation:last-child{margin-bottom:0}
+.board-equation>span{display:block;font-size:12px;color:#758568;margin-bottom:3px}
+.board-equation>div{font:21px/1.65 Georgia,'Times New Roman',serif;overflow-wrap:anywhere}
+.board-reminder{font-size:12px;background:#f1f3e9;border-left:2px solid #b3c499;padding:8px 11px;margin-top:13px;line-height:1.8}
+.copy-sheet .board-line{font-size:14px;line-height:1.8}
+.copy-sheet.chalk{--diagram-force:#e2ecd1;--diagram-gravity:#f1c794;--diagram-component:#d5dc92;--diagram-muted:#a4bba7;--diagram-plane:#2c5145;--diagram-block:#456c50;background:#25473f;color:#f3f2dd}
+.chalk .copy-heading p,.chalk .board-equation>span,.chalk .board-pair figcaption,.chalk .copy-heading>span{color:#bfd0b6}
+.chalk .board-panel,.chalk .board-equations{border-color:#ffffff25}
+.chalk .board-panel h4>span{color:#d5dc92}
+.chalk .board-reminder{background:#ffffff09;border-color:#b2bf87;color:#e0e8d2}
+@media(max-width:1050px){.tree-row{padding-left:calc(var(--depth)*3px)}.tree-children .tree-children-inner{margin-left:5px}.tree-row .branch,.tree-leaf{width:36px}}
+@media(max-width:900px){aside.tree{width:250px;transition:transform .28s ease,opacity .22s ease,visibility .28s}.closed aside.tree{width:250px}.shell,.shell.closed{grid-template-columns:0 minmax(0,1fr)}.board-drawer{width:100vw;border-radius:0}.tree-row{padding-left:calc(var(--depth)*7px)}}
+@media(max-width:600px){.mastery-list{grid-template-columns:1fr}.board-drawer{padding:16px}.copy-sheet{padding:16px}.board-pair{grid-template-columns:1fr;gap:12px}.board-diagram{max-height:215px}.board-equations{border-left:0;border-top:1px solid #dce3d1;padding:12px 0 0}.board-equation>div{font-size:21px}.copy-heading h3{font-size:23px}.board-panel h4{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.shell,aside.tree,.tree-children,.branch-chevron,.tree-row{transition:none!important}}
+</style>
+<style data-asset="cards.css">/* Teacher notebook. Board geometry and diagram colors stay in styles.css. */
+:root{--paper:#f3f5f8;--ink:#25364b;--muted:#8390a1;--green:#305987;--line:#dce3ec;--pale:#eaf0f7;--gold:#a78351;scroll-behavior:smooth;scroll-padding-top:95px}
+body{font:14px/1.7 'Microsoft YaHei','PingFang SC',sans-serif;background:var(--paper)}
+button{min-height:38px;padding:7px 12px;font-size:13px;border-radius:6px}button:hover{background:#e9eff7}button:focus-visible,a:focus-visible{outline:3px solid #90accd;outline-offset:3px}button:disabled{cursor:not-allowed}
+.primary{background:#305987;color:white}.primary:hover{background:#25496e}.quiet{color:#63758b}.soft-primary{color:#305987;background:#e9f0f9;border-color:#d8e3f1}.danger{color:#a56b56}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.notebook{min-height:100vh;padding-left:248px}.notebook:not(.directory-open){padding-left:0}.notebook-sidebar{position:fixed;inset:0 auto 0 0;width:248px;padding:32px 20px 24px;background:#21344e;color:#d9e3f0;display:flex;flex-direction:column;z-index:30;overflow:auto;transition:transform .2s}.notebook:not(.directory-open) .notebook-sidebar{transform:translateX(-100%)}
+.notebook-brand{display:flex;align-items:center;gap:12px;font:600 21px 'SimSun',serif;letter-spacing:2px;margin:0 4px 31px}.notebook-brand>span{font:34px Georgia;color:#dce9fa;background:#344c6a;border:1px solid #4c6381;width:43px;height:47px;text-align:center;line-height:42px;border-radius:7px}.notebook-brand small{font:10px/1.5 'Microsoft YaHei',sans-serif;color:#a4b5cb;letter-spacing:2px;display:block;margin-top:8px}
+.search-box{display:flex;align-items:center;gap:7px;border:1px solid #42526c;border-radius:6px;padding:0 10px;margin-bottom:34px;color:#9fadc1}.search-box>span{font-size:23px}.search-box input{background:transparent;color:#e4ebf6;border:0;padding:9px 0;font-size:12px;min-width:0;outline:none}.search-box:focus-within{border-color:#97b8dd}.search-box input::placeholder{color:#99abc3}
+.directory-heading{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:1px;color:#9cacc2;margin:0 8px 19px}.directory-heading>span:last-child{font-size:10px;letter-spacing:0}.folder{margin:6px 0}.folder summary{list-style:none;cursor:pointer;padding:8px 6px;color:#c5d2e2;font-size:12px;display:flex;gap:8px;align-items:center}.folder summary::-webkit-details-marker{display:none}.folder summary:hover{color:white}.folder-chevron{display:inline-block;transform:rotate(0);font-size:18px;line-height:1;width:10px}.folder[open]>summary .folder-chevron{transform:rotate(90deg)}.folder-contents{margin-left:13px;padding-left:7px;border-left:1px solid #43536b}.directory-card{width:100%;display:flex;align-items:center;gap:9px;text-align:left;font-size:12px;padding:11px 9px;line-height:1.5;color:#bfcfe4;margin:5px 0}.directory-card span:last-child{overflow-wrap:anywhere}.directory-card:hover{background:#2c4566}.directory-card[aria-current]{background:#3a567b;color:white}.card-dot{width:5px;height:5px;background:#adbed5;border-radius:50%;flex-shrink:0}.directory-card[aria-current] .card-dot{background:#c6dcfc}.new-card-button{width:100%;text-align:left;border:1px dashed #617592;margin-top:25px;color:#dfebfa}.new-card-button:hover{background:#314967}.trash-button{color:#aabacf;margin:14px 0}.trash-button:hover{background:#314967}.sidebar-footer{margin-top:auto;padding:48px 7px 0;color:#8b9eb8}.sidebar-footer>span{font:9px Georgia;letter-spacing:1.5px}.sidebar-footer p{font-size:10px;margin-top:8px}.no-results{padding:15px 7px;color:#aabacf;font-size:12px}.mobile-only,.sidebar-shade{display:none}
+.notebook-main{min-width:0}.notebook-toolbar{position:sticky;top:0;z-index:20;min-height:68px;padding:12px 30px;background:#f9fbfdeF;backdrop-filter:blur(12px);border-bottom:1px solid #e2e7ef;display:flex;justify-content:space-between;align-items:center;gap:10px}.toolbar-context,.toolbar-actions{display:flex;align-items:center;gap:9px}.toolbar-context{color:#6c7c90;font-size:12px}.toolbar-context>button{font-size:17px;padding:5px 8px;color:#58708a}.toolbar-actions>button{font-size:12px;white-space:nowrap}.toolbar-actions .edit-toggle{min-width:86px;margin-left:7px}.edit-toggle.editing{background:#e4edf8;border-color:#9eb6d4;color:#254f7c}.toolbar-context #save-status{font-size:10px;margin-left:15px;color:#7b8f81;white-space:nowrap}#save-status.warning{color:#a3533b}.editing-note{max-width:1000px;margin:20px auto -7px;padding:10px 24px;color:#58799e;font-size:11px;display:flex;gap:8px;align-items:center}.editing-note>span:last-child{margin-left:auto;color:#8492a3}.editing-dot{height:6px;width:6px;border-radius:50%;background:#7196b4}
+.lesson{max-width:1050px;margin:auto;padding:38px 48px 0}.lesson-header{padding-bottom:22px}.lesson .breadcrumb{margin:0 0 20px;color:#8794a5;font-size:11px;display:block}.breadcrumb>span{padding:0 7px;color:#b0bcc9}.title-row{display:flex;align-items:center;justify-content:space-between;gap:16px}.title-content{flex:1;min-width:0}.title-row h1{font:600 36px/1.45 'Songti SC','SimSun',serif;color:#233c60;letter-spacing:3px;overflow-wrap:anywhere}.notebook-mark{font:9px/1.6 Georgia,serif;letter-spacing:2px;color:#8c9db2;border-left:1px solid #ccd7e4;padding-left:15px}.essence{font-size:13px;color:#687a90;margin-top:16px}.section-jumps{display:flex;gap:27px;margin-top:23px;font-size:11px}.section-jumps a{color:#58708f;text-decoration:none}.section-jumps a:hover{color:#223f69}.section-jumps a span{color:#a1acba;margin-left:6px}
+.lesson-section{margin-top:22px;scroll-margin-top:0}.section-heading{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #d5dfe9;padding:18px 0 15px;gap:8px}.section-heading>div{display:flex;align-items:center;gap:12px}.section-number{font:italic 20px Georgia;color:#8ba0b9}.section-heading h2{font:600 20px 'SimSun',serif;letter-spacing:2px;color:#304969}.section-hint{font-size:11px;color:#95a0ae;margin-left:4px}.section-count{font:11px 'Microsoft YaHei';color:#9aa6b5;white-space:nowrap}.section-heading .quiet{font-size:11px;padding:5px 8px}.board-mainline{display:flex;align-items:baseline;gap:13px;font-size:13px;color:#516d8d;margin:0 0 15px;line-height:1.8}.board-mainline>span{font-size:10px;color:#8497ad;flex-shrink:0}
+.lesson .board-sheet{margin:0;border:1px solid #dbe0d4;border-radius:4px;box-shadow:0 3px 12px #26374605}.lesson .copy-sheet{padding:27px 31px;background:#fffef9}.lesson .copy-heading h3{font-size:25px;letter-spacing:1px}.lesson .copy-heading>span{font-size:10px}.lesson .copy-heading p{font-size:12px}.lesson .board-panel{padding:21px 0}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}.panel-heading h4{flex:1;min-width:0}.lesson .board-pair{gap:24px}.lesson .board-diagram{max-height:236px}.lesson .board-equation>div{font-size:21px}.lesson .board-equation{margin-bottom:11px}.lesson .board-reminder{font-size:11px}.board-prose{white-space:normal;font-size:15px;line-height:1.85;margin:8px 0;overflow-wrap:anywhere}.board-footer-note{font-size:12px;padding-top:18px;color:#6b775f;line-height:1.9}.lesson .copy-sheet.chalk{background:#25473f;color:#f3f2dd}.chalk .board-footer-note{color:#bfd0b6}.empty-diagram{min-height:150px;border:1px dashed #d2dccb;display:grid;place-items:center;color:#a1ad99;font-size:12px;padding:24px;text-align:center}.attached-image{position:relative;margin:8px 0}.attached-image img{max-width:100%;max-height:450px;object-fit:contain;display:block;margin:auto;border-radius:2px}.image-zoom{width:100%;padding:0;display:block;cursor:zoom-in;border:0;border-radius:0;background:none!important}.image-tools{display:flex;flex-direction:column;gap:7px;margin:12px 0}.attached-image>.quiet{font-size:11px;margin-top:4px}
+#examples-section{margin-top:35px}.example-card{padding:23px 27px;background:#fff;border:1px solid #dde5ef;border-radius:5px;margin-bottom:15px;scroll-margin-top:0}.example-heading,.example-heading>div{display:flex;align-items:center;justify-content:space-between;gap:12px}.example-number{font:italic 17px Georgia,'SimSun';color:#8d9aab}.level{display:inline-block;padding:2px 9px;font-size:10px;border-radius:4px;line-height:1.8}.level-基础{background:#e9f1e9;color:#55755a}.level-典型{background:#e8eff9;color:#527ba7}.level-变式{background:#faf0e2;color:#ad8450}.example-card h3{font:600 19px/1.6 'SimSun',serif;color:#354e6d;margin:15px 0 13px}.example-body{display:grid;grid-template-columns:1.05fr 1fr;gap:25px;align-items:start}.example-prompt p,.example-solution p{font-size:13px;line-height:1.95;overflow-wrap:anywhere}.example-solution{border-left:1px solid #e4e9f0;padding-left:24px}.example-solution:empty{display:none}.example-body:has(.example-solution:empty){grid-template-columns:1fr}.small-label{display:block;font-size:10px;letter-spacing:1px;color:#8c9aae;margin-bottom:8px}.answer{margin-top:18px;background:#f5f8fc;padding:12px 15px;border-left:2px solid #aabed7}.answer .small-label{margin-bottom:3px}.empty-examples{padding:31px 24px 35px;border:1px dashed #cdd8e6;text-align:center;border-radius:5px;background:#f9fbfd}.empty-symbol{display:inline-grid;place-items:center;width:35px;height:35px;border:1px solid #d9e3ef;border-radius:50%;color:#96abc3;margin-bottom:12px;font-size:20px}.empty-examples h3{font:17px 'SimSun';color:#637c99}.empty-examples p{font-size:11px;color:#93a1b2;margin:10px 0 0}.empty-examples button{margin-top:15px}
+.edit-field{display:block;margin:12px 0;font-weight:normal;min-width:0}.edit-field>span{display:block;font:11px/1.7 'Microsoft YaHei';color:#8290a0;margin-bottom:6px;letter-spacing:0}.edit-field input,.edit-field textarea,.edit-field select,.level-select select{background:#eff3f6;border:1px solid transparent;box-shadow:none;border-radius:5px;padding:10px 12px;font:14px/1.75 'Microsoft YaHei';color:#35485f;width:100%;min-width:0}.edit-field textarea{min-height:100px;resize:vertical}.edit-field input:focus,.edit-field textarea:focus,.edit-field select:focus,.level-select select:focus{outline:none;background:#fff;border-color:#94b0d2;box-shadow:0 0 0 3px #769ac617}.edit-field textarea[aria-invalid=true]{border-color:#c99b80}.is-editing .board-equations textarea{min-height:230px;font-family:Georgia,'Microsoft YaHei',serif}.is-editing .copy-heading textarea{min-height:76px}.is-editing .panel-heading h4{align-items:baseline}.panel-heading h4 .edit-field{flex:1;margin:0}.panel-heading h4 .edit-field>span{display:none}.item-tools{display:flex;gap:2px;align-items:center;flex-shrink:0}.item-tools button{font-size:10px;padding:4px 7px;min-height:32px;color:#8392a1}.item-tools button:hover{color:#305987}.level-select select{font-size:12px;padding:3px 8px;min-height:33px}.level-select{width:78px}.field-warning{font-size:11px;color:#ac6e4d}
+.auxiliary{margin-top:25px;border-top:1px solid #dde4ec;padding:16px 0;color:#7f8da0;font-size:12px}.auxiliary summary{cursor:pointer}.auxiliary summary small{margin-left:15px;font-size:10px}.auxiliary li{margin:10px 0;color:#617389}.must-know{padding:14px 17px;background:#ecf1f6;font-size:12px;color:#65778d;display:flex;flex-wrap:wrap;gap:8px 20px;border-radius:4px}.must-know .small-label{margin:0;width:100%}.lesson-danger{display:flex;justify-content:flex-end;margin:25px 0}.lesson-footer{padding:30px 0 24px;margin-top:25px;border-top:1px solid #dce4ed;display:flex;justify-content:space-between;color:#9ba7b6;font-size:10px;letter-spacing:1px}
+.empty-notebook{padding:100px 25px;text-align:center}.empty-notebook>span{font:65px Georgia;color:#a4b7cc}.empty-notebook h1{font-size:28px;margin:20px 0}.empty-notebook p{color:#8999ac;margin-bottom:20px}.notebook-dialog{border:1px solid #d7e0eb;border-radius:9px;padding:24px;max-width:calc(100vw - 24px);width:510px;color:var(--ink);background:#fff}.notebook-dialog .modal-head{margin-bottom:20px}.notebook-dialog .modal-head h2{font:600 20px 'SimSun';letter-spacing:1px}.notebook-dialog>p{font-size:13px;line-height:1.9}.dialog-help{font-size:11px;color:#8d9bad;margin:14px 0}.wide-dialog{width:1000px}.zoomed-image{max-width:100%;max-height:80vh;object-fit:contain;display:block;margin:auto}.trash-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}#undo-bar{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);padding:8px 18px;background:#e6eef9;border:1px solid #b5c6dc;border-radius:7px;z-index:35;font-size:12px;box-shadow:0 5px 25px #1c3c6b15}#toast{background:#294360;color:white;max-width:calc(100vw - 30px);font-size:12px}.loading,.startup-error{max-width:700px;margin:80px auto;padding:24px}.startup-error h1{font-size:25px;margin-bottom:20px}
+@media(min-width:1500px){.lesson{max-width:1140px;padding-left:65px;padding-right:65px}.lesson .board-diagram{max-height:255px}}
+@media(max-width:1100px){.notebook{padding-left:220px}.notebook-sidebar{width:220px;padding:27px 16px}.notebook-toolbar{padding:11px 18px}.toolbar-context #save-status{display:none}.lesson{padding:30px 30px 0}.section-hint{display:none}.notebook-mark{font-size:8px}.lesson .copy-sheet{padding:23px}.lesson .board-pair{gap:17px}.is-editing .panel-heading{align-items:flex-start;flex-direction:column}.item-tools{align-self:flex-end}}
+@media(max-width:800px){.notebook{padding-left:0}.notebook-sidebar{width:260px;box-shadow:15px 0 40px #24324d20}.mobile-only{display:block;color:#b9cce5;margin-left:auto}.notebook-brand{gap:8px}.sidebar-shade{position:fixed;inset:0;background:#172b4a55!important;border-radius:0;z-index:25;width:100%;height:100%;padding:0;border:0}.directory-open .sidebar-shade{display:block}.notebook-toolbar{padding:10px 15px}.lesson{padding:28px 28px 0}.lesson .board-pair{grid-template-columns:minmax(180px,.95fr) minmax(0,1.05fr)}.editing-note{padding:10px 27px}.title-row h1{font-size:31px}}
+@media(max-width:560px){:root{scroll-padding-top:100px}.notebook-toolbar{padding:9px 10px;flex-wrap:wrap;gap:3px}.toolbar-context{gap:3px}.toolbar-context>span:not(#save-status){display:none}.toolbar-actions{gap:2px;flex:1;justify-content:flex-end}.toolbar-actions>button{font-size:10px;padding:7px;min-height:38px}.toolbar-actions .edit-toggle{min-width:65px;margin-left:3px}.lesson{padding:25px 17px 0}.title-row h1{font-size:29px}.notebook-mark{font-size:7px;letter-spacing:1px;padding-left:10px}.lesson .breadcrumb{font-size:10px;margin-bottom:15px}.section-heading{padding:17px 0 12px}.section-heading>div{gap:8px}.section-heading h2{font-size:19px}.section-count{font-size:10px}.lesson .copy-sheet{padding:19px 17px}.lesson .copy-heading h3{font-size:22px}.lesson .board-pair{grid-template-columns:1fr;gap:14px}.lesson .board-diagram{max-height:220px}.lesson .board-equations{border-left:0;border-top:1px solid #dce3d1;padding:16px 0 0}.lesson .board-equation>div{font-size:20px}.lesson .board-panel h4{font-size:14px;gap:8px}.board-mainline{font-size:12px;gap:9px}.lesson-section{margin-top:15px}.example-card{padding:20px 17px}.example-body{grid-template-columns:1fr;gap:20px}.example-solution{border-left:0;border-top:1px solid #e5eaf0;padding:17px 0 0}.editing-note{padding:8px 17px;font-size:10px}.editing-note>span:last-child{display:none}.empty-examples p{line-height:1.9}.edit-field input,.edit-field textarea,.edit-field select{font-size:16px}.is-editing .notebook-mark{display:none}.auxiliary summary small{font-size:9px;margin-left:5px}}
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}.notebook-sidebar{transition:none}}
+.upload-button{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:7px 12px;font-size:12px;color:#63758b;border:1px solid #d4dfe9;border-radius:5px;overflow:hidden;cursor:pointer;background:#f4f7fa}.upload-button:hover{background:#e9eff7}.upload-button:focus-within{outline:2px solid #94b0d2}.upload-button input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;padding:0}
+@media print{.notebook-sidebar,.notebook-toolbar,.editing-note,.section-jumps,.section-heading button,.lesson-danger,.sidebar-shade{display:none!important}.notebook{padding:0}.lesson{max-width:none;padding:0}.lesson .copy-sheet{box-shadow:none}.board-panel,.example-card{break-inside:avoid}}
+
+.import-control{position:relative;display:inline-flex;align-items:center;min-height:38px;padding:7px 12px;font-size:12px;color:inherit;border-radius:6px;overflow:hidden;cursor:pointer;white-space:nowrap}.import-control:hover{background:#e9eff7}.import-control:focus-within{outline:3px solid #90accd}.import-control input{position:absolute;inset:0;opacity:0;width:100%;height:100%;padding:0;cursor:pointer}@media(max-width:560px){.import-control{font-size:10px;padding:7px}}
+</style></head><body><div id="app"><p class="loading">正在打开备课本…</p></div><dialog id="modal" aria-label="操作窗口"></dialog><div id="toast" role="status"></div><input id="image-upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden><input id="data-import" type="file" accept=".json,application/json" hidden><script type="application/json" id="notebook-data">{"schemaVersion":3,"notebookId":"physics-notebook","cards":[{"id":"incline","title":"斜面问题","path":["力学","牛顿运动定律","动力学模型"],"essence":"","mustKnow":[],"board":{"mainline":"真实受力 → 重力分解 → 运动方程","title":"固定斜面上的下滑物块","conditions":"斜面固定，物块已在下滑且不脱离斜面；仅受重力、支持力和滑动摩擦力。μ 为动摩擦因数。","note":"停下后重新判断｜速度减为零后，重新判断静摩擦力能否维持平衡，不能直接延续滑动阶段的结论。","columns":[{"id":"card-88cb2a0c-8544-4495-acce-23336789614f","title":"隔离物块，画出三个真实力","content":"重力 · 竖直向下 | G = mg\n支持力 · 垂直斜面向外 | N\n滑动摩擦力 · 沿斜面向上 | f = μN","scene":"forces","caption":"物块沿斜面下滑，摩擦力沿斜面向上。","note":"μ 是动摩擦因数。不要多画“运动方向的力”。","images":[]},{"id":"card-0e5a1d93-fece-41b5-8b59-ad5d1661c7ac","title":"沿斜面建系，将重力分解","content":"沿斜面向下的分量 | Gₓ = mg sinθ\n垂直斜面向内的分量 | G⊥ = mg cosθ","scene":"components","caption":"虚线是辅助线，两个分量合起来等效于重力。","note":"θ 是斜面倾角，也是重力与垂直斜面向内方向的夹角。列式时不能将重力和这两个分量重复计入。","images":[]},{"id":"card-83c860c9-3ec9-4068-bb5d-5a9fbdde7c4d","title":"分方向列方程，联立求加速度","content":"y 方向 · 无垂直斜面的加速度 | N − mg cosθ = 0\n先求支持力，再求摩擦力 | N = mg cosθ；f = μmg cosθ\nx 方向 · 牛顿第二定律 | mg sinθ − f = ma\n代入并约去质量 m | a = g(sinθ − μcosθ)","scene":"equations","caption":"约定 x 正方向沿斜面向下，y 正方向垂直斜面向外。","note":"a > 0：下滑加速；a = 0：匀速下滑；a \u003c 0：下滑减速。这里只讨论已经下滑的阶段。","images":[]}]},"examples":[],"pitfalls":[]}],"trash":[]}</script><script data-asset="card-model.js">/* Plain JSON records. The legacy storage keys remain untouched. */
+window.CardModel = (() => {
+  const uid = () => 'card-' + (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+  const column = () => ({id:uid(),title:'',content:'',scene:'',caption:'',note:'',images:[]});
+  const blank = (path = []) => ({id:uid(),title:'未命名卡片',path:[...path],essence:'',mustKnow:[],board:{mainline:'',title:'',conditions:'',note:'',columns:[column()]},examples:[],pitfalls:[]});
+  const example = () => ({id:uid(),level:'基础',title:'',prompt:'',steps:'',answer:'',images:[]});
+  function migrate(legacy) {
+    const card = blank(['力学','牛顿运动定律','动力学模型']);
+    card.id='incline'; card.title=legacy.nodes?.find(n=>n.id==='incline')?.title || '斜面问题';
+    const boards=(legacy.blocks||[]).filter(b=>b.type==='board');
+    const panels=boards.flatMap(b=>b.panels||[]);
+    // More than three legacy panels are split across cards, never discarded.
+    const cards=[];
+    for(let offset=0; offset<Math.max(panels.length,1); offset+=3) {
+      const c=structuredClone(card); if(offset){c.id=uid();c.title+=' · 板书续页 '+(offset/3+1);}
+      c.board={mainline:'',title:'固定斜面上的下滑物块',conditions:'斜面固定，物块已在下滑且不脱离斜面；仅受重力、支持力和滑动摩擦力。μ 为动摩擦因数。',note:offset?'':boards.map(b=>b.text||'').join('\n'),columns:panels.slice(offset,offset+3).map(p=>({...column(),title:p.title||'',scene:p.scene||'',caption:p.caption||'',content:(p.formulas||[]).map(([a,b])=>a+' | '+b).join('\n'),note:p.note||''}))};
+      c.board.mainline='真实受力 → 重力分解 → 运动方程';
+      if(!c.board.columns.length)c.board.columns=[column()];
+      cards.push(c);
+    }
+    return {schemaVersion:3,notebookId:'physics-notebook',cards,trash:[]};
+  }
+  function validate(data) {
+    const fail = msg => {throw new Error('数据格式不正确：'+msg);};
+    const obj = (v,name) => {if(!v||typeof v!=='object'||Array.isArray(v))fail(name);};
+    const str = (v,name,max=100000) => {if(typeof v!=='string'||v.length>max)fail(name);};
+    const list = (v,name,max=10000) => {if(!Array.isArray(v)||v.length>max)fail(name);};
+    const strings = (v,name,max) => {list(v,name,max);v.forEach(x=>str(x,name));};
+    const ids = new Set();
+    const id = (v,name) => {str(v,name,200);if(!/^[A-Za-z0-9_-]+$/.test(v)||ids.has(v))fail(name+'格式错误或重复');ids.add(v);};
+    function images(xs) {list(xs,'图片',30);xs.forEach(im=>{obj(im,'图片');str(im.id,'图片编号',200);str(im.name,'图片名称',500);str(im.src,'图片内容',30000000);if(!/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(im.src))fail('图片仅支持 PNG、JPEG、WebP、GIF 内嵌数据');});}
+    function card(c){
+      obj(c,'卡片');id(c.id,'卡片编号');str(c.title,'标题',500);strings(c.path,'目录',12);str(c.essence,'一句话本质');strings(c.mustKnow,'必须掌握',3);strings(c.pitfalls,'易错与提问',100);
+      obj(c.board,'板书');['mainline','title','conditions','note'].forEach(k=>str(c.board[k],k));list(c.board.columns,'板书栏',3);if(!c.board.columns.length)fail('至少保留一栏板书');
+      c.board.columns.forEach(p=>{obj(p,'板书栏');id(p.id,'板书栏编号');['title','content','caption','note','scene'].forEach(k=>str(p[k],k));if(!['','forces','components','equations'].includes(p.scene))fail('示意图类型');images(p.images);});
+      list(c.examples,'例题',1000);c.examples.forEach(q=>{obj(q,'例题');id(q.id,'例题编号');if(!['基础','典型','变式'].includes(q.level))fail('例题分类');['title','prompt','steps','answer'].forEach(k=>str(q[k],k));images(q.images);});
+    }
+    obj(data,'备课本');if(data.schemaVersion!==3)fail('请导入本工具导出的第 3 版 JSON');str(data.notebookId,'备课本编号',200);if(!data.notebookId)fail('备课本编号');list(data.cards,'卡片',2000);list(data.trash,'回收站',2000);data.cards.forEach(card);data.trash.forEach(card);
+    return structuredClone(data);
+  }
+  return {uid,column,blank,example,migrate,validate};
+})();
+</script>
+<script data-asset="data.js">// Initial notebook: original board retained; examples are ready for your own materials.
+window.PHYSICS_SEED = {
+  "schemaVersion": 3,
+  "notebookId": "physics-notebook",
+  "cards": [
+    {
+      "id": "incline",
+      "title": "斜面问题",
+      "path": [
+        "力学",
+        "牛顿运动定律",
+        "动力学模型"
+      ],
+      "essence": "",
+      "mustKnow": [],
+      "board": {
+        "mainline": "真实受力 → 重力分解 → 运动方程",
+        "title": "固定斜面上的下滑物块",
+        "conditions": "斜面固定，物块已在下滑且不脱离斜面；仅受重力、支持力和滑动摩擦力。μ 为动摩擦因数。",
+        "note": "停下后重新判断｜速度减为零后，重新判断静摩擦力能否维持平衡，不能直接延续滑动阶段的结论。",
+        "columns": [
+          {
+            "id": "card-88cb2a0c-8544-4495-acce-23336789614f",
+            "title": "隔离物块，画出三个真实力",
+            "content": "重力 · 竖直向下 | G = mg\n支持力 · 垂直斜面向外 | N\n滑动摩擦力 · 沿斜面向上 | f = μN",
+            "scene": "forces",
+            "caption": "物块沿斜面下滑，摩擦力沿斜面向上。",
+            "note": "μ 是动摩擦因数。不要多画“运动方向的力”。",
+            "images": []
+          },
+          {
+            "id": "card-0e5a1d93-fece-41b5-8b59-ad5d1661c7ac",
+            "title": "沿斜面建系，将重力分解",
+            "content": "沿斜面向下的分量 | Gₓ = mg sinθ\n垂直斜面向内的分量 | G⊥ = mg cosθ",
+            "scene": "components",
+            "caption": "虚线是辅助线，两个分量合起来等效于重力。",
+            "note": "θ 是斜面倾角，也是重力与垂直斜面向内方向的夹角。列式时不能将重力和这两个分量重复计入。",
+            "images": []
+          },
+          {
+            "id": "card-83c860c9-3ec9-4068-bb5d-5a9fbdde7c4d",
+            "title": "分方向列方程，联立求加速度",
+            "content": "y 方向 · 无垂直斜面的加速度 | N − mg cosθ = 0\n先求支持力，再求摩擦力 | N = mg cosθ；f = μmg cosθ\nx 方向 · 牛顿第二定律 | mg sinθ − f = ma\n代入并约去质量 m | a = g(sinθ − μcosθ)",
+            "scene": "equations",
+            "caption": "约定 x 正方向沿斜面向下，y 正方向垂直斜面向外。",
+            "note": "a > 0：下滑加速；a = 0：匀速下滑；a < 0：下滑减速。这里只讨论已经下滑的阶段。",
+            "images": []
+          }
+        ]
+      },
+      "examples": [],
+      "pitfalls": []
+    }
+  ],
+  "trash": []
+};
+</script>
+<script data-asset="board-diagrams.js">// 图、公式使用同一坐标约定：斜面向右上方倾斜，物块正在向左下方滑动。
+window.drawBoardDiagram = function(scene) {
+ const id='board-'+scene;
+ const arrow=(d,color='force')=>`<path d="${d}" fill="none" stroke="var(--diagram-${color})" stroke-width="2.4" marker-end="url(#${id}-${color})"/>`;
+ const label=(x,y,text,color='force')=>`<text x="${x}" y="${y}" fill="var(--diagram-${color})">${text}</text>`;
+ const markers=['force','gravity','component'].map(c=>`<marker id="${id}-${c}" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="none" stroke="var(--diagram-${c})" stroke-width="1.2"/></marker>`).join('');
+ const plane=scene==='components'?'':`<path d="M38 181H326V37Z" fill="var(--diagram-plane)" stroke="var(--diagram-muted)" stroke-width="1.2"/><path d="M75 181A37 37 0 0 0 71 165" fill="none" stroke="var(--diagram-muted)"/>${label(84,173,'θ','component')}<g transform="translate(180 110) rotate(-26.565)"><rect x="-23" y="-35" width="46" height="34" rx="3" fill="var(--diagram-block)" stroke="var(--diagram-force)"/></g>`;
+ let vectors='';
+ if(scene==='components'){
+  vectors=arrow('M180 90V195','gravity')+arrow('M180 90L138 111','component')+arrow('M180 90L222 174','component')+
+  '<path d="M138 111L180 195L222 174" fill="none" stroke="var(--diagram-muted)" stroke-width="1.3" stroke-dasharray="4 4"/>'+
+  '<path d="M180 130A40 40 0 0 0 198 126" fill="none" stroke="var(--diagram-component)"/>'+
+  label(191,151,'θ','component')+label(149,219,'mg','gravity')+label(30,106,'mg sinθ','component')+label(232,165,'mg cosθ','component')+
+  '<text x="20" y="34" class="diagram-small">重力的等效分解</text>';
+ }else if(scene==='equations'){
+  vectors=arrow('M180 90L74 143','component')+arrow('M180 90L146 22','component')+label(42,156,'+x','component')+label(117,23,'+y','component')+
+  arrow('M180 90V195','gravity')+label(189,208,'mg','gravity')+arrow('M180 90L250 55')+label(263,57,'f')+
+  '<text x="204" y="128" class="diagram-small">y 方向：aᵧ = 0</text>';
+ }else{
+  vectors=arrow('M180 90V195','gravity')+label(189,208,'mg','gravity')+arrow('M180 90L146 22')+label(123,22,'N')+
+  arrow('M180 90L250 55')+label(263,57,'f')+
+  '<path d="M104 92L66 111" fill="none" stroke="var(--diagram-muted)" stroke-width="1.5" marker-end="url(#'+id+'-component)"/>'+
+  '<text x="43" y="75" class="diagram-small">下滑 v</text>';
+ }
+ const desc={forces:'下滑物块的受力图：重力竖直向下，支持力垂直斜面向外，滑动摩擦力沿斜面向上。',components:'重力分解图：mg sinθ 沿斜面向下，mg cosθ 垂直斜面向内，两分量矢量和等于重力。',equations:'坐标约定图：x 正方向沿斜面向下，y 正方向垂直斜面向外。'}[scene];
+ return `<svg class="board-diagram" viewBox="0 0 355 235" role="img" aria-label="${desc}"><defs>${markers}</defs>${plane}${vectors}<circle cx="180" cy="90" r="3.3" fill="var(--diagram-force)"/></svg>`;
+};
+</script>
+<script data-asset="board-view.js">/* Preserve the original left-diagram/right-equation board and chalk palette. */
+window.BoardView = (() => {
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const text=v=>esc(v).replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  const field=(path,label,value,large=false,placeholder='')=>`<label class="edit-field"><span>${esc(label)}</span>${large?`<textarea maxlength="100000" data-field="${path}" placeholder="${esc(placeholder)}">${esc(value)}</textarea>`:`<input maxlength="${path==='title'||/^examples\.\d+\.title$/.test(path)?500:100000}" data-field="${path}" value="${esc(value)}" placeholder="${esc(placeholder)}">`}</label>`;
+  const button=(action,label,extra='',cls='quiet')=>`<button type="button" data-action="${action}" class="${cls}" ${extra}>${label}</button>`;
+  const upload=(target,label)=>`<label class="upload-button">${label}<input type="file" data-upload-target="${target}" accept="image/png,image/jpeg,image/webp,image/gif" multiple aria-label="${label}"></label>`;
+  const images=(xs,edit,target)=>xs.map((im,j)=>`<div class="attached-image"><button type="button" data-action="zoom" data-target="${target}" data-image="${j}" class="image-zoom" aria-label="放大${esc(im.name)}"><img src="${esc(im.src)}" alt="${esc(im.name)}"></button>${edit?button('remove-image','移除图片',`data-target="${target}" data-image="${j}"`):''}</div>`).join('');
+  function equations(content){return content.split('\n').filter(x=>x.trim()).map(line=>{const parts=line.split('|');return parts.length>1?`<div class="board-equation"><span>${text(parts.shift().trim())}</span><div>${text(parts.join('|').trim())}</div></div>`:`<p class="board-prose">${text(line)}</p>`;}).join('');}
+  function panel(p,i,edit,count){
+    const base=`board.columns.${i}`,target='board:'+i;
+    return `<section class="board-panel" data-panel="${i}"><div class="panel-heading"><h4><span>${String(i+1).padStart(2,'0')}</span>${edit?field(base+'.title','板书栏标题',p.title):esc(p.title||'未命名板书')}</h4>${edit?`<div class="item-tools">${button('column-up','↑',`data-index="${i}" aria-label="上移第${i+1}栏" ${i===0?'disabled':''}`)}${button('column-down','↓',`data-index="${i}" aria-label="下移第${i+1}栏" ${i===count-1?'disabled':''}`)}${button('column-delete','删除栏',`data-index="${i}" ${count===1?'disabled':''}`)}</div>`:''}</div><div class="board-pair"><figure>${p.scene?window.drawBoardDiagram(p.scene).replaceAll('board-'+p.scene,'board-'+p.id):''}${images(p.images,edit,target)}${!p.scene&&!p.images.length?`<div class="empty-diagram">${edit?'在这里添加题图、受力图或手写板书':'图示待补充'}</div>`:''}${edit?`<div class="image-tools">${upload(target,'＋ 添加图片')}<label class="edit-field"><span>示意图</span><select data-field="${base}.scene">${[['','不使用示意图'],['forces','原有受力图'],['components','原有重力分解图'],['equations','原有运动方程图']].map(([v,n])=>`<option value="${v}" ${p.scene===v?'selected':''}>${n}</option>`).join('')}</select></label></div>${field(base+'.caption','图注',p.caption)}`:p.caption?`<figcaption>${text(p.caption)}</figcaption>`:''}</figure><div class="board-equations">${edit?field(base+'.content','公式 / 板书正文',p.content,true,'每行一条；可写：说明 | 公式\n也可以直接写文字，支持 **加粗**。'):equations(p.content)||'<p class="muted">板书内容待补充</p>'}</div></div>${edit?field(base+'.note','本栏提醒（可选）',p.note):p.note?`<p class="board-reminder">${text(p.note)}</p>`:''}</section>`;
+  }
+  function render(board,edit=false,chalk=false){return `<div class="board-sheet copy-sheet ${chalk&&!edit?'chalk':''}"><div class="copy-heading"><span>课堂板书 / 图与公式</span>${edit?field('board.title','板书标题',board.title)+field('board.conditions','适用条件',board.conditions,true):`${board.title?`<h3>${esc(board.title)}</h3>`:''}${board.conditions?`<p>条件：${text(board.conditions)}</p>`:''}`}</div>${board.columns.map((p,i)=>panel(p,i,edit,board.columns.length)).join('')}${edit?field('board.note','板书收尾提醒（可选）',board.note,true):board.note?`<p class="board-footer-note">${text(board.note.replaceAll('｜',' · '))}</p>`:''}</div>`;}
+  return {esc,text,field,button,images,upload,render};
+})();
+</script>
+<script data-asset="card-workbench.js">window.CardWorkbench = (()=>{
+  const {esc,text,field,button,images,upload}=BoardView;
+  function examples(card,edit){return card.examples.map((q,i)=>`<article class="example-card" data-example="${i}"><div class="example-heading"><div><span class="example-number">例 ${String(i+1).padStart(2,'0')}</span>${edit?`<label class="level-select"><span class="sr-only">例题${i+1}分类</span><select data-field="examples.${i}.level">${['基础','典型','变式'].map(l=>`<option ${q.level===l?'selected':''}>${l}</option>`).join('')}</select></label>`:`<span class="level level-${q.level}">${q.level}</span>`}</div>${edit?`<div class="item-tools">${button('example-up','↑',`data-index="${i}" aria-label="上移例题${i+1}" ${i===0?'disabled':''}`)}${button('example-down','↓',`data-index="${i}" aria-label="下移例题${i+1}" ${i===card.examples.length-1?'disabled':''}`)}${button('example-delete','删除例题',`data-index="${i}"`)}</div>`:''}</div>${edit?field(`examples.${i}.title`,'例题标题',q.title):`<h3>${esc(q.title||'未命名例题')}</h3>`}<div class="example-body"><div class="example-prompt">${images(q.images,edit,'example:'+i)}${edit?upload('example:'+i,'＋ 添加题图')+field(`examples.${i}.prompt`,'题干',q.prompt,true):`<p>${text(q.prompt)||'题干待补充'}</p>`}</div><div class="example-solution">${edit?field(`examples.${i}.steps`,'关键步骤',q.steps,true)+field(`examples.${i}.answer`,'答案',q.answer,true):`${q.steps?`<div><span class="small-label">关键步骤</span><p>${text(q.steps)}</p></div>`:''}${q.answer?`<div class="answer"><span class="small-label">答案</span><p>${text(q.answer)}</p></div>`:''}`}</div></div></article>`).join('');}
+  function render(card,edit,chalk){
+    const nav=card.path.length?card.path.map(esc).join('<span> / </span>'):'未分类';
+    return `<article class="lesson"><header class="lesson-header"><div class="breadcrumb">高中物理 <span>/</span> ${nav}</div><div class="title-row"><div class="title-content">${edit?field('title','卡片标题',card.title):`<h1>${esc(card.title||'未命名卡片')}</h1>`}</div><span class="notebook-mark">PHYSICS<br>TEACHING NOTES</span></div>${edit?field('path','所在目录（用 / 分隔层级）',card.path.join(' / '),false,'例如：力学 / 运动学')+field('essence','一句话本质（可选）',card.essence):card.essence?`<p class="essence">${text(card.essence)}</p>`:''}<nav class="section-jumps" aria-label="卡片内导航"><a href="#board-section">01 板书</a><a href="#examples-section">02 例题 <span>${card.examples.length}</span></a></nav></header>${card.mustKnow.length&&!edit?`<div class="must-know"><span class="small-label">必须掌握</span>${card.mustKnow.map(x=>`<span>${text(x)}</span>`).join('')}</div>`:''}<section class="lesson-section" id="board-section"><div class="section-heading"><div><span class="section-number">01</span><h2>板书</h2><span class="section-hint">把课堂主线写清楚</span></div><div>${edit?button('column-add','＋ 添加一栏',card.board.columns.length===3?'disabled title="最多 3 栏"':''):button('chalk',chalk?'纸面预览':'黑板预览','','quiet')}<span class="section-count">${card.board.columns.length} 栏</span></div></div>${edit?field('board.mainline','板书主线（一句话）',card.board.mainline):card.board.mainline?`<p class="board-mainline"><span>主线</span>${text(card.board.mainline)}</p>`:''}${BoardView.render(card.board,edit,chalk)}</section><section class="lesson-section" id="examples-section"><div class="section-heading"><div><span class="section-number">02</span><h2>例题</h2><span class="section-hint">从基础，到迁移</span></div><div>${edit?button('example-add','＋ 添加例题','','soft-primary'):''}<span class="section-count">${card.examples.length} 题</span></div></div>${examples(card,edit)||`<div class="empty-examples"><span class="empty-symbol">＋</span><h3>把值得讲的题，留在这里</h3><p>${edit?'添加一道例题，粘贴题干或上传题图，再补充步骤与答案。':'暂无例题 · 开启右上角「编辑」后，可添加自己的图文题目。'}</p>${edit?button('example-add','添加第一道例题','','soft-primary'):''}</div>`}</section>${edit?`<details class="auxiliary"><summary>辅助备课信息 <small>可选填写，空白时不显示</small></summary>${field('mustKnow','必须掌握（每行一条，最多 3 条）',card.mustKnow.join('\n'),true)}<p id="must-limit" class="field-warning" role="alert" hidden>最多 3 条；请合并或删除多余条目，此项暂未保存。</p>${field('pitfalls','易错 / 提问（每行一条）',card.pitfalls.join('\n'),true)}</details><div class="lesson-danger">${button('card-delete','删除这张卡片','','danger')}</div>`:card.pitfalls.length?`<details class="auxiliary"><summary>易错 / 提问 <span>${card.pitfalls.length}</span></summary><ul>${card.pitfalls.map(x=>`<li>${text(x)}</li>`).join('')}</ul></details>`:''}<footer class="lesson-footer"><span>物理手记</span><span>一张卡，一节课。</span></footer></article>`;
+  }
+  function directory(state,current,query,edit){
+    const root={children:new Map(),cards:[]};
+    const terms=query.trim().toLowerCase();
+    const matched=state.cards.filter(c=>!terms||[c.title,c.path.join('/'),c.essence,c.board.mainline,c.board.title,c.board.conditions,c.board.note,...c.board.columns.flatMap(p=>[p.title,p.content,p.caption,p.note]),...c.examples.flatMap(q=>[q.title,q.prompt,q.steps,q.answer]),...c.mustKnow,...c.pitfalls].join(' ').toLowerCase().includes(terms));
+    for(const c of matched){let n=root;for(const name of c.path.length?c.path:['未分类']){if(!n.children.has(name))n.children.set(name,{children:new Map(),cards:[]});n=n.children.get(name);}n.cards.push(c);}
+    const draw=(n,prefix='')=>[...n.children].map(([name,child])=>`<details class="folder" open data-folder="${esc(prefix+'/'+name)}"><summary><span class="folder-chevron">›</span>${esc(name)}</summary><div class="folder-contents">${draw(child,prefix+'/'+name)}</div></details>`).join('')+n.cards.map(c=>button('select-card',`<span class="card-dot"></span><span>${esc(c.title||'未命名卡片')}</span>`,`data-id="${esc(c.id)}" ${c.id===current?'aria-current="page"':''}`,'directory-card')).join('');
+    return `<div class="directory-heading"><span>备课目录</span><span>${state.cards.length} 张</span></div>${draw(root)||'<p class="no-results">没有找到卡片</p>'}${edit?button('card-new','＋ 新建卡片','','new-card-button')+button('trash',`回收站 · ${state.trash.length}`,'','trash-button'):''}`;
+  }
+  return {render,directory};
+})();
+</script>
+<script data-asset="card-storage.js">window.CardStorage = (() => {
+  let db, key, lastStamp=0, tail=Promise.resolve();
+  const journal=()=>key+':recovery';
+  function open(){return new Promise((resolve,reject)=>{const r=indexedDB.open('physics-teacher-notebook',1);r.onupgradeneeded=()=>r.result.createObjectStore('notebooks');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.onblocked=()=>reject(new Error('浏览器存储被占用'));});}
+  function read(){return new Promise((resolve,reject)=>{const r=db.transaction('notebooks').objectStore('notebooks').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+  function write(record){return new Promise((resolve,reject)=>{const tx=db.transaction('notebooks','readwrite');tx.objectStore('notebooks').put(record,key);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('保存中断'));});}
+  async function load(seed){
+    key='physics-teacher-v3:'+seed.notebookId;
+    let stored,recovery,warning='';
+    try{db=await open();stored=await read();}catch{warning='浏览器数据库不可用，将尝试本地备用保存。';}
+    let rawRecovery;
+    try{rawRecovery=localStorage.getItem(journal());}catch{warning='浏览器备用保存不可用。';}
+    try{recovery=JSON.parse(rawRecovery||'null');}catch{throw new Error('本地恢复记录无法读取；原记录未覆盖。请使用 JSON 备份恢复。');}
+    const candidates=[stored,recovery].filter(Boolean).sort((a,b)=>b.stamp-a.stamp);
+    if(candidates.length){
+      for(const r of candidates){try{const state=CardModel.validate(r.state);lastStamp=r.stamp;return {state,warning};}catch{warning='部分保存记录损坏，已尝试读取可用副本。';}}
+      throw new Error('已有保存记录无法读取。请保留浏览器数据并使用 JSON 备份恢复，避免覆盖原内容。');
+    }
+    if(!document.getElementById('notebook-data')){
+      try{const old=JSON.parse(localStorage.getItem('physics-workbench-cards-v2')||localStorage.getItem('physics-workbench-v1')||'null');if(old?.blocks&&old?.nodes)return {state:CardModel.validate(CardModel.migrate(old)),warning};}catch{warning='旧版记录未能转换，原记录已保留。';}
+    }
+    return {state:CardModel.validate(seed),warning};
+  }
+  function save(state){
+    const record={stamp:Math.max(Date.now(),lastStamp+1),state:structuredClone(state)};lastStamp=record.stamp;
+    let recovered=false;
+    try{localStorage.setItem(journal(),JSON.stringify(record));recovered=true;}catch{}
+    const operation=tail.catch(()=>{}).then(async()=>{
+      if(db){try{await write(record);try{const current=JSON.parse(localStorage.getItem(journal())||'null');if(current?.stamp===record.stamp)localStorage.removeItem(journal());}catch{}return;}catch(error){if(!recovered)throw error;}}
+      if(!recovered)throw new Error('浏览器空间不足或禁止保存。请立即导出 JSON 备份，勿关闭页面。');
+    });
+    tail=operation;return operation;
+  }
+  return {load,save,flush:()=>tail};
+})();
+</script>
+<script data-asset="publish.js">/* 单文件发布包：只读取明确列出的网页资源，不包含本地启动脚本或日志。 */
+window.PhysicsPublish = {
+ async build(state, read = async path => {
+  const inline=document.querySelector('[data-asset="'+path+'"]');
+  if(inline)return inline.textContent;
+  const response=await fetch(path,{cache:'no-store'});
+  if(!response.ok)throw new Error('无法读取 '+path+'，请通过本地预览地址打开后导出。');
+  return response.text();
+ }) {
+  const snapshot=CardModel.validate(state);
+  const scripts=['card-model.js','data.js','board-diagrams.js','board-view.js','card-workbench.js','card-storage.js','publish.js','app.js'];
+  const styles=['styles.css','cards.css'];
+  const sources=Object.fromEntries(await Promise.all([...scripts,...styles].map(async name=>[name,await read(name)])));
+  const styleHTML=styles.map(name=>`<style data-asset="${name}">${sources[name].replace(/<\/style/gi,'<\\/style')}</style>`).join('\n');
+  const scriptHTML=scripts.map(name=>`<script data-asset="${name}">${sources[name].replace(/<\/script/gi,'<\\/script')}<\/script>`).join('\n');
+  const data=JSON.stringify(snapshot).replace(/</g,'\\u003c');
+  const html=`<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>物理手记 · 教师备课本</title>${styleHTML}</head><body><div id="app"><p class="loading">正在打开备课本…</p></div><dialog id="modal" aria-label="操作窗口"></dialog><div id="toast" role="status"></div><input id="image-upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden><input id="data-import" type="file" accept=".json,application/json" hidden><script type="application/json" id="notebook-data">${data}<\/script>${scriptHTML}</body></html>`;
+  return {html,version:new Date().toISOString(),imageCount:snapshot.cards.reduce((sum,c)=>sum+c.board.columns.reduce((n,p)=>n+p.images.length,0)+c.examples.reduce((n,q)=>n+q.images.length,0),0)};
+ },
+ zip(html){
+  const data=new TextEncoder().encode(html),name=new TextEncoder().encode('index.html');
+  let crc=0xffffffff;for(const byte of data){crc^=byte;for(let i=0;i<8;i++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}crc=(crc^0xffffffff)>>>0;
+  const localSize=30+name.length+data.length,centralSize=46+name.length;
+  const bytes=new Uint8Array(localSize+centralSize+22),view=new DataView(bytes.buffer);
+  const u16=(offset,value)=>view.setUint16(offset,value,true),u32=(offset,value)=>view.setUint32(offset,value,true);
+  u32(0,0x04034b50);u16(4,20);u16(12,33);u32(14,crc);u32(18,data.length);u32(22,data.length);u16(26,name.length);bytes.set(name,30);bytes.set(data,30+name.length);
+  const c=localSize;u32(c,0x02014b50);u16(c+4,20);u16(c+6,20);u16(c+14,33);u32(c+16,crc);u32(c+20,data.length);u32(c+24,data.length);u16(c+28,name.length);bytes.set(name,c+46);
+  const e=c+centralSize;u32(e,0x06054b50);u16(e+8,1);u16(e+10,1);u32(e+12,centralSize);u32(e+16,localSize);return bytes;
+ },
+ downloadFile(data,name,type){const url=URL.createObjectURL(new Blob([data],{type}));const link=document.createElement('a');link.href=url;link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);},
+ async download(state){const result=await this.build(state);this.downloadFile(this.zip(result.html),'物理手记-网站发布包.zip','application/zip');}
+};
+</script>
+<script data-asset="app.js">/* Teacher notebook: all mutations are explicitly gated by edit mode. */
+(async()=>{
+  'use strict';
+  const {esc,button,field}=BoardView;
+  const app=document.querySelector('#app'),modal=document.querySelector('#modal');
+  let state,current,edit=false,chalk=false,query='',treeOpen=innerWidth>800,saveState='已保存到本机',pending=0,saveVersion=0,invalid=false,uploadTarget,lastFocus,confirmAction,undoState;
+  const selected=()=>state.cards.find(c=>c.id===current);
+  const toast=msg=>{const el=document.querySelector('#toast');el.textContent=msg;el.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('visible'),3500);};
+  const status=()=>{const el=document.querySelector('#save-status');if(el){el.textContent=saveState;el.classList.toggle('warning',saveState.includes('失败')||saveState.includes('暂未'));}};
+  async function save(){const v=++saveVersion;pending++;saveState='正在保存…';status();try{await CardStorage.save(state);if(v===saveVersion)saveState='已保存到本机';}catch(error){saveState='保存失败 · 请导出备份';toast(error.message);}finally{pending--;status();}}
+  function refreshDirectory(){const container=document.querySelector('#directory');const closed=new Set([...container.querySelectorAll('details:not([open])')].map(d=>d.dataset.folder));container.innerHTML=CardWorkbench.directory(state,current,query,edit);container.querySelectorAll('details').forEach(d=>{if(closed.has(d.dataset.folder)&&!query)d.open=false;});}
+  function render(){
+    const c=selected();
+    app.innerHTML=`<div class="notebook ${treeOpen?'directory-open':''} ${edit?'is-editing':''}"><aside class="notebook-sidebar" aria-label="备课目录"><div class="notebook-brand"><span>∠</span><div>物理手记<small>教师的日常备课本</small></div>${button('tree','×','aria-label="关闭目录"','mobile-only')}</div><label class="search-box"><span>⌕</span><input id="search" type="search" aria-label="搜索卡片与内容" placeholder="搜索卡片与内容" value="${esc(query)}"></label><nav id="directory" aria-label="知识目录">${CardWorkbench.directory(state,current,query,edit)}</nav><div class="sidebar-footer"><span>FOR THE NEXT LESSON</span><p>让每一次讲解，都有清楚的主线。</p></div></aside>${treeOpen?button('tree','','aria-label="收起目录遮罩"','sidebar-shade'):''}<main class="notebook-main"><header class="notebook-toolbar"><div class="toolbar-context">${button('tree','☰','aria-label="切换目录"')}<span>${edit?'正在备课':'备课速览'}</span><span id="save-status" role="status">${esc(saveState)}</span></div><div class="toolbar-actions">${button('export','导出全部数据')}<label class="import-control">导入数据<input type="file" data-import-source accept=".json,application/json" aria-label="导入数据"></label>${edit?button('publish','导出网站'):''}${button('edit',edit?'✓ 完成编辑':'✎ 编辑',`aria-pressed="${edit}"`,'edit-toggle '+(edit?'editing':'primary'))}</div></header>${edit?'<div class="editing-note"><span class="editing-dot"></span>编辑模式 · 文字与图片自动保存 <span>完成后关闭编辑，安心阅读</span></div>':''}${c?CardWorkbench.render(c,edit,chalk):`<div class="empty-notebook"><span>∠</span><h1>从下一节课开始</h1><p>${edit?'新建一张卡片，整理板书与例题。':'你的备课本还是空的。点击右上角「编辑」开始。'}</p>${edit?button('card-new','＋ 新建卡片','','primary'):''}</div>`}</main></div>`;
+    document.title=(c?.title||'物理手记')+' · 教师备课本';
+  }
+  function show(title,html,wide=false){lastFocus=document.activeElement;modal.className=wide?'notebook-dialog wide-dialog':'notebook-dialog';modal.innerHTML=`<div class="modal-head"><h2>${esc(title)}</h2>${button('close','×','aria-label="关闭窗口"')}</div>${html}`;if(!modal.open)modal.showModal();}
+  function close(){modal.close();confirmAction=null;lastFocus?.isConnected&&lastFocus.focus();}
+  function confirm(title,message,fn,label='确认删除'){confirmAction=fn;show(title,`<p>${esc(message)}</p><div class="form-actions">${button('close','取消','','outline')}${button('confirm',label,'','primary')}</div>`);}
+  function remember(restore){undoState=restore;}
+  function changed(){save();render();}
+  function blocked(){if(invalid){toast('请先把「必须掌握」整理为最多 3 条。');document.querySelector('[data-field="mustKnow"]')?.focus();return true;}return false;}
+  function targetRecord(target,card=selected()){const [kind,n]=target.split(':');return kind==='board'?card?.board.columns[Number(n)]:card?.examples[Number(n)];}
+  function downloadJSON(data,name){PhysicsPublish.downloadFile(JSON.stringify(data,null,2),name,'application/json');}
+  function exportData(){downloadJSON(state,'物理手记-全部数据-'+new Date().toISOString().slice(0,10)+'.json');toast('已导出全部卡片、图片及回收站');}
+  function openTrash(){show('回收站',`<p class="dialog-help">删除的卡片保存在这里，可以恢复。</p>${state.trash.map(c=>`<div class="trash-row"><span>${esc(c.title)}</span>${button('restore','恢复',`data-id="${esc(c.id)}"`,'outline')}</div>`).join('')||'<p class="muted">回收站是空的。</p>'}`);}
+  async function action(event){
+    const el=event.target.closest('[data-action]');if(!el)return;const {action:a,id,index,target,image}=el.dataset;const i=Number(index),c=selected();
+    const readActions=['tree','edit','select-card','export','import','close','confirm','zoom','chalk'];
+    if(!edit&&!readActions.includes(a))return;
+    if(!['close','zoom','tree'].includes(a)&&blocked())return;
+    switch(a){
+      case 'tree': treeOpen=!treeOpen;document.querySelector('.notebook').classList.toggle('directory-open',treeOpen);if(!document.querySelector('.sidebar-shade')){const shade=document.createElement('button');shade.className='sidebar-shade';shade.dataset.action='tree';shade.setAttribute('aria-label','收起目录遮罩');document.querySelector('.notebook').append(shade);}break;
+      case 'edit':edit=!edit;render();break;
+      case 'select-card':current=id;if(innerWidth<=800)treeOpen=false;render();window.scrollTo({top:0});break;
+      case 'chalk':chalk=!chalk;render();document.querySelector('#board-section')?.scrollIntoView({block:'start'});break;
+      case 'close':close();break;
+      case 'confirm':{const fn=confirmAction;close();if(fn)await fn();break;}
+      case 'export':exportData();break;
+      case 'import':document.querySelector('#data-import').click();break;
+      case 'publish':try{await CardStorage.flush();await PhysicsPublish.download(state);toast('网站发布包已下载，发布后也可编辑');}catch(error){toast('导出失败：'+error.message);}break;
+      case 'card-new':show('新建备课卡',`<form id="new-card-form"><label class="edit-field"><span>卡片名称</span><input name="title" maxlength="500" required placeholder="例如：匀变速直线运动"></label><label class="edit-field"><span>所在目录</span><input name="path" value="${esc(c?.path.join(' / ')||'')}" placeholder="力学 / 运动学"></label><p class="dialog-help">用 / 分隔层级，目录会自动建立。</p><div class="form-actions">${button('close','取消','','outline')}<button class="primary" type="submit">创建卡片</button></div></form>`);break;
+      case 'card-delete':confirm('删除卡片',`将「${c.title}」移入回收站？可随时恢复。`,()=>{state.trash.push(c);state.cards=state.cards.filter(x=>x.id!==c.id);current=state.cards[0]?.id;changed();toast('已移入回收站');});break;
+      case 'trash':openTrash();break;
+      case 'restore':{const card=state.trash.find(x=>x.id===id);if(card){state.trash=state.trash.filter(x=>x.id!==id);state.cards.push(card);current=id;save();close();render();toast('已恢复卡片');}break;}
+      case 'column-add':if(c.board.columns.length<3){c.board.columns.push(CardModel.column());changed();}break;
+      case 'column-delete':if(c.board.columns.length>1)confirm('删除这一栏板书','该栏的文字和图片都会移除。本次操作可以撤销。',()=>{const removed=c.board.columns.splice(i,1)[0];remember(()=>{if(c.board.columns.length>=3){toast('请先腾出一栏，再撤销删除。');return false;}c.board.columns.splice(i,0,removed);return true;});changed();offerUndo();});break;
+      case 'example-add':if(c.examples.length>=1000){toast('每张卡最多 1000 道例题，请新建卡片分类整理。');break;}c.examples.push(CardModel.example());changed();document.querySelector('[data-example="'+(c.examples.length-1)+'"]')?.scrollIntoView({block:'start',behavior:'smooth'});break;
+      case 'example-delete':confirm('删除例题','删除这道题及其图片？本次操作可以撤销。',()=>{const removed=c.examples.splice(i,1)[0];remember(()=>{c.examples.splice(i,0,removed);return true;});changed();offerUndo();});break;
+      case 'example-up':case 'example-down':case 'column-up':case 'column-down':{const list=a.startsWith('column')?c.board.columns:c.examples,j=i+(a.endsWith('up')?-1:1);if(j>=0&&j<list.length){[list[i],list[j]]=[list[j],list[i]];changed();}break;}
+      case 'upload':uploadTarget={cardId:c.id,recordId:targetRecord(target)?.id,kind:target.split(':')[0]};document.querySelector('#image-upload').click();break;
+      case 'remove-image':{const record=targetRecord(target);confirm('移除图片','从这项内容中移除图片？本次操作可以撤销。',()=>{const removed=record.images.splice(Number(image),1)[0];remember(()=>{if(record.images.length>=30){toast('请先移除一张图片，再撤销删除。');return false;}record.images.splice(Number(image),0,removed);return true;});changed();offerUndo();});break;}
+      case 'zoom':{const im=targetRecord(target)?.images[Number(image)];if(im)show(im.name,`<img class="zoomed-image" src="${esc(im.src)}" alt="${esc(im.name)}">`,true);break;}
+      case 'undo':if(undoState&&undoState()){undoState=null;changed();document.querySelector('#undo-bar')?.remove();toast('已撤销删除');}break;
+    }
+  }
+  function offerUndo(){document.querySelector('#undo-bar')?.remove();const el=document.createElement('div');el.id='undo-bar';el.innerHTML='内容已删除 '+button('undo','撤销删除','','outline');document.body.append(el);}
+  function pathParts(value){const xs=value.split(/[/／]/).map(x=>x.trim()).filter(Boolean);if(xs.length>12)throw new Error('目录最多 12 层');return xs;}
+  function editField(event){
+    const el=event.target,path=el.dataset.field;if(!edit||!path)return;
+    let value=el.value;
+    if(path==='mustKnow'||path==='pitfalls'){value=value.split('\n').map(x=>x.trim()).filter(Boolean);if(path==='mustKnow'){invalid=value.length>3;document.querySelector('#must-limit').hidden=!invalid;el.setAttribute('aria-invalid',String(invalid));if(invalid)return;}}
+    if(path==='path'){try{value=pathParts(value);}catch(error){toast(error.message);return;}}
+    const parts=path.split('.');let target=selected();for(const part of parts.slice(0,-1)){if(!Object.hasOwn(target,part))return;target=target[part];}const key=parts.at(-1);if(!Object.hasOwn(target,key))return;target[key]=value;
+    save();if(path==='title'||path==='path')refreshDirectory();if(path.endsWith('.scene'))render();
+  }
+  app.addEventListener('input',event=>{if(event.target.id==='search'){query=event.target.value;refreshDirectory();}else if(event.target.tagName!=='SELECT')editField(event);});
+  app.addEventListener('change',event=>{if(event.target.tagName==='SELECT')editField(event);});
+  document.addEventListener('click',event=>{action(event).catch(error=>toast(error.message));});
+  modal.addEventListener('submit',event=>{if(event.target.id!=='new-card-form'||!edit)return;event.preventDefault();try{const f=new FormData(event.target),card=CardModel.blank(pathParts(f.get('path')));card.title=f.get('title').trim()||'未命名卡片';state.cards.push(card);current=card.id;query='';close();changed();window.scrollTo({top:0});}catch(error){toast(error.message);}});
+  document.addEventListener('change',async event=>{
+    if(!event.target.matches('#image-upload,[data-upload-target]'))return;
+    const nativeTarget=event.target.dataset.uploadTarget;
+    if(nativeTarget&&selected())uploadTarget={cardId:selected().id,recordId:targetRecord(nativeTarget)?.id,kind:nativeTarget.split(':')[0]};
+    const files=[...event.target.files];event.target.value='';if(!edit||!files.length||!uploadTarget)return;
+    const owner=state.cards.find(x=>x.id===uploadTarget.cardId),list=uploadTarget.kind==='board'?owner?.board.columns:owner?.examples,record=list?.find(x=>x.id===uploadTarget.recordId);if(!record)return;
+    try{
+      if(record.images.length+files.length>30)throw new Error('每项内容最多 30 张图片');
+      if(files.some(f=>!['image/png','image/jpeg','image/webp','image/gif'].includes(f.type)||f.size>20*1024*1024))throw new Error('请选择 PNG、JPEG、WebP 或 GIF 图片，每张不超过 20 MB。');
+      const additions=await Promise.all(files.map(file=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve({id:CardModel.uid(),name:file.name,src:reader.result});reader.onerror=()=>reject(new Error('图片读取失败'));reader.readAsDataURL(file);})));
+      record.images.push(...additions);await save();render();toast('图片已添加');
+    }catch(error){toast(error.message);}
+  });
+  document.addEventListener('change',async event=>{
+    if(!event.target.matches('#data-import,[data-import-source]'))return;
+    const file=event.target.files[0];event.target.value='';if(!file)return;
+    try{if(file.size>200*1024*1024)throw new Error('文件超过 200 MB，请使用较小的备份。');const incoming=CardModel.validate(JSON.parse(await file.text()));confirm('导入备课数据',`文件包含 ${incoming.cards.length} 张卡片。导入将替换当前备课本；替换前会自动下载当前数据备份。`,async()=>{downloadJSON(state,'物理手记-导入前备份-'+Date.now()+'.json');incoming.notebookId=state.notebookId;state=incoming;current=state.cards[0]?.id;query='';edit=false;invalid=false;undoState=null;document.querySelector('#undo-bar')?.remove();await save();render();toast('已导入 '+state.cards.length+' 张卡片');},'备份并导入');}catch(error){show('未导入数据',`<p>${esc(error.message)}</p><p class="dialog-help">当前内容没有改变，请选择本工具导出的完整 JSON 文件。</p>`);}
+  });
+  window.addEventListener('beforeunload',event=>{if(pending||invalid||saveState.includes('失败')){event.preventDefault();event.returnValue='';}});
+  try{
+    const embedded=document.getElementById('notebook-data');const seed=embedded?JSON.parse(embedded.textContent):window.PHYSICS_SEED;
+    const loaded=await CardStorage.load(seed);state=loaded.state;current=state.cards[0]?.id;render();if(loaded.warning)toast(loaded.warning);await save();
+  }catch(error){state={schemaVersion:3,notebookId:window.PHYSICS_SEED.notebookId,cards:[],trash:[]};try{const embedded=document.getElementById('notebook-data');if(embedded)state.notebookId=JSON.parse(embedded.textContent).notebookId;}catch{}app.innerHTML=`<div class="startup-error"><h1>备课本暂未打开</h1><p>${esc(error.message)}</p><p>原存储记录未覆盖。请保留浏览器数据，或选择之前导出的 JSON 备份恢复。</p>${button('import','从 JSON 备份恢复','','primary')}</div>`;}
+})();
+</script></body></html>
